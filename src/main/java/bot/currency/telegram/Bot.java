@@ -43,16 +43,15 @@ public class Bot extends TelegramLongPollingBot {
 
     public void sendText(Long who, String what) {
         SendMessage sm = SendMessage.builder()
-                .chatId(who.toString()) // Who are we sending a message to
-                .text(what).build();    // Message content
+                .chatId(who.toString()) 
+                .text(what).build();   
         try {
-            execute(sm); // Actually sending the message
+            execute(sm); 
         } catch (TelegramApiException e) {
-            throw new RuntimeException(e); // Any error will be printed here
+            throw new RuntimeException(e); 
         }
     }
 
-    // Додайте метод для відправлення змін валют у Telegram
     public void sendCurrencyChanges(long chatId) {
         currencyScheduler.startUpdates();
         Map<String, String> currencyChanges = currencyChangeQueue.getCurrencyChanges();
@@ -64,13 +63,5 @@ public class Bot extends TelegramLongPollingBot {
 
         sendText(chatId, message.toString());
         currencyChangeQueue.getCurrencyChanges().clear();
-
     }
-
-//    public void startCurrencyUpdates(long chatId) {
-//        // Використовуйте цей метод для планування запитів на отримання змін валют
-//        currencyScheduler.startUpdates((currencyChanges) -> {
-//             sendCurrencyChanges(chatId);
-//        });
-//    }
 }
